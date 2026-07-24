@@ -1,7 +1,6 @@
 # PrevDengue
 
-Sistema inteligente de apoio à tomada de decisão para previsão de surtos de dengue utilizando Machine Learning e variáveis meteorológicas. Desenvolvido como **Minimum Viable Product (MVP)** durante o programa **Rocket de Férias** da **FPFtech Escola Tecnológica**.
-
+Sistema inteligente de apoio à tomada de decisão para previsão de surtos de dengue baseado em análise preditiva e variáveis meteorológicas. Desenvolvido como protótipo acadêmico para o ecossistema de monitoramento epidemiológico em Manaus, Amazonas.
 ---
 
 # Visão Geral
@@ -267,11 +266,14 @@ ou utilize o **Live Server** do Visual Studio Code.
 
 O sistema utiliza um modelo de regressão baseado em **Random Forest**, treinado com registros históricos provenientes do SINAN combinados a informações meteorológicas.
 
-## Variáveis de Entrada
+## Variáveis Climáticas Analisadas
 
-- Temperatura média;
-- Umidade relativa;
-- Volume de chuva.
+O modelo preditivo fundamenta-se nos três principais fatores meteorológicos que regem o ciclo biológico do vetor *Aedes aegypti*:
+
+1. **Volume de Chuva (mm):** Precipitação semanal que fomenta a criação de criadouros e reservatórios de água parada para desova e eclosão de larvas.
+2. **Umidade Relativa (%):** Concentração de vapor d'água no ar que impacta diretamente a taxa de sobrevivência, longevidade e o raio de atividade do vetor adulto.
+3. **Temperatura Média (Celsius):** Variável térmica que acelera o metabolismo do inseto, reduz o tempo de incubação extrínseca do vírus e encurta o ciclo de maturação de ovo a mosquito adulto.
+
 
 ## Saída do Modelo
 
