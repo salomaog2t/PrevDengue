@@ -175,7 +175,6 @@ R² = 0.89
 O resultado demonstra elevada capacidade do modelo em explicar a variabilidade dos dados históricos utilizados durante o treinamento.
 
 ---
----
 
 # Artefato Gerado pelo Pipeline
 
