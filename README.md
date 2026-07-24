@@ -175,6 +175,17 @@ R² = 0.89
 O resultado demonstra elevada capacidade do modelo em explicar a variabilidade dos dados históricos utilizados durante o treinamento.
 
 ---
+---
+
+# Artefato Gerado pelo Pipeline
+
+Durante a etapa de processamento e treinamento do modelo, o sistema gera automaticamente um gráfico estatístico contendo a série histórica utilizada na análise preditiva. Esse artefato auxilia na validação visual dos dados processados e na interpretação do comportamento epidemiológico ao longo do período analisado.
+
+<p align="center">
+    <img src="backend/artefatos/grafico_dengue.png" alt="Gráfico gerado pelo pipeline de Machine Learning" width="900">
+</p>
+
+---
 
 # Dicionário das Variáveis Climáticas
 
