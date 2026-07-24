@@ -1,0 +1,10 @@
+# Ignora os arquivos brutos gigantes (>100MB) para o GitHub não travar
+backend/dataset/*.csv
+*.csv
+
+# GARANTE que o arquivo processado da IA vá para o GitHub!
+!backend/artefatos/dados_clima_dengue.csv
+
+# Ignora caches do sistema e ambientes virtuais
+__pycache__/
+venv/
