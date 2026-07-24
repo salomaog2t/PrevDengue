@@ -1,4 +1,3 @@
-````markdown
 # PrevDengue
 
 Sistema inteligente de apoio à tomada de decisão para previsão de surtos de dengue baseado em técnicas de Machine Learning e análise de variáveis meteorológicas. O projeto foi desenvolvido como **Minimum Viable Product (MVP)** durante o programa **Rocket de Férias** da **FPFtech Escola Tecnológica**, propondo uma arquitetura preditiva capaz de apoiar órgãos de saúde pública e defesa civil na antecipação de cenários epidemiológicos.
