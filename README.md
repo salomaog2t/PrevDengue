@@ -169,7 +169,7 @@ O desempenho do modelo foi avaliado utilizando métricas de regressão.
 **Coeficiente de Determinação**
 
 ```text
-R² = 0.89
+R² = 0.95
 ```
 
 O resultado demonstra elevada capacidade do modelo em explicar a variabilidade dos dados históricos utilizados durante o treinamento.
