@@ -1,102 +1,104 @@
+````markdown
 # PrevDengue
 
-Sistema inteligente de apoio à tomada de decisão para previsão de surtos de dengue baseado em análise preditiva e variáveis meteorológicas. Desenvolvido como protótipo acadêmico para o ecossistema de monitoramento epidemiológico em Manaus, Amazonas.
+Sistema inteligente de apoio à tomada de decisão para previsão de surtos de dengue baseado em técnicas de Machine Learning e análise de variáveis meteorológicas. O projeto foi desenvolvido como **Minimum Viable Product (MVP)** durante o programa **Rocket de Férias** da **FPFtech Escola Tecnológica**, propondo uma arquitetura preditiva capaz de apoiar órgãos de saúde pública e defesa civil na antecipação de cenários epidemiológicos.
+
 ---
 
 # Visão Geral
 
-O **PrevDengue** tem como objetivo auxiliar gestores públicos na prevenção de surtos de dengue por meio de modelos preditivos treinados com dados históricos do **SINAN (Sistema de Informação de Agravos de Notificação)** e informações meteorológicas.
+O **PrevDengue** consiste em uma plataforma preditiva que integra dados epidemiológicos do **SINAN (Sistema de Informação de Agravos de Notificação)** com informações climáticas para estimar a quantidade de notificações de dengue em semanas epidemiológicas futuras.
 
-A plataforma utiliza algoritmos de aprendizado de máquina para estimar a quantidade de notificações de dengue nas semanas epidemiológicas subsequentes, permitindo um planejamento antecipado de ações como:
+A solução utiliza modelos supervisionados de regressão para identificar padrões entre condições meteorológicas e a incidência da doença, permitindo que gestores públicos planejem ações preventivas antes do aumento expressivo de casos.
 
-- Controle vetorial;
-- Alocação de equipes de campo;
-- Planejamento de recursos hospitalares;
-- Operações de fumacê;
-- Campanhas preventivas.
+Entre as principais aplicações encontram-se:
 
-A arquitetura separa o processamento de Inteligência Artificial da interface de visualização, proporcionando maior organização, escalabilidade e facilidade de manutenção.
+- Planejamento de campanhas preventivas;
+- Apoio à alocação de equipes de vigilância epidemiológica;
+- Dimensionamento de recursos hospitalares;
+- Planejamento de operações de controle vetorial;
+- Apoio à tomada de decisão baseada em dados.
 
 ---
 
 # Contexto do Projeto
 
-Este projeto foi desenvolvido durante o programa **Rocket de Férias** da **FPFtech Escola Tecnológica**, no contexto do Hackathon e Demo Day. O objetivo foi construir um MVP funcional aplicando técnicas de Ciência de Dados, Machine Learning e Desenvolvimento Web para apoiar a tomada de decisão na saúde pública.
+O projeto foi desenvolvido durante o **Rocket de Férias**, programa de imersão tecnológica promovido pela **FPFtech Escola Tecnológica**, como parte das atividades de Hackathon e Demo Day.
+
+O desafio consistiu na construção de um MVP funcional capaz de aplicar técnicas de Ciência de Dados, Engenharia de Software e Machine Learning para solucionar um problema real de saúde pública utilizando dados históricos e variáveis ambientais.
 
 ---
 
-# Funcionalidades
+# Arquitetura da Solução
 
-- Previsão de casos de dengue utilizando Random Forest Regressor;
-- Integração entre dados epidemiológicos e meteorológicos;
-- Dashboard web para visualização dos resultados;
-- API REST desenvolvida em Flask;
-- Geração de gráficos estatísticos;
-- Geração de relatórios em PDF;
-- Visualização de indicadores e nível de risco.
+A arquitetura foi projetada seguindo o princípio de separação de responsabilidades entre processamento analítico e camada de apresentação.
+
+- **Back-end:** responsável pelo processamento dos dados, treinamento do modelo de Machine Learning e disponibilização da API REST.
+- **Front-end:** responsável pela visualização das previsões, gráficos estatísticos e interação com o usuário.
+- **Artefatos:** armazenamento de datasets processados e produtos gerados pelo pipeline analítico.
 
 ---
 
-# Arquitetura
-
-## Fluxo Geral da Solução
+## Pipeline da Solução
 
 ```mermaid
 graph LR
-    A[Dados SINAN e Meteorológicos]
-    --> B[Pré-processamento]
 
-    B --> C[Modelo Random Forest]
+A[Datasets SINAN + Dados Meteorológicos]
+--> B[Pré-processamento]
 
-    C --> D[API Flask]
+B --> C[Tratamento e Engenharia de Features]
 
-    D --> E[Dashboard Web]
+C --> D[Random Forest Regressor]
 
-    E --> F[Semáforo de Alerta para Defesa Civil]
+D --> E[API REST Flask]
+
+E --> F[Dashboard Web]
+
+F --> G[Relatório Executivo]
+
+G --> H[Semáforo de Alerta para Gestores]
 ```
 
 ---
 
 ## Diagrama de Sequência
 
-O diagrama abaixo apresenta o fluxo completo de comunicação entre o dashboard, a API e o modelo de Machine Learning durante uma previsão.
+O diagrama abaixo representa o fluxo completo de comunicação entre a interface Web, a API Flask e o modelo preditivo durante uma solicitação de previsão.
 
 <p align="center">
-    <img src="docs/Diagrama-Sequencia.png" alt="Diagrama de Sequência" width="900">
+<img src="docs/Diagrama-Sequencia.png" width="900">
 </p>
 
 ---
 
-## Fluxo da Aplicação
+# Arquitetura dos Componentes
 
 ```text
-Usuário
-    │
-    ▼
-Dashboard Web
-    │
-    ▼
-Requisição HTTP
-    │
-    ▼
-API Flask
-    │
-    ▼
-Pré-processamento
-    │
-    ▼
-Random Forest Regressor
-    │
-    ▼
-Predição
-    │
-    ▼
-Dashboard + Relatório
+                        Front-end
+                  HTML • CSS • JavaScript
+                            │
+                            ▼
+                    Requisições HTTP
+                            │
+                            ▼
+                     API REST (Flask)
+                            │
+             ┌──────────────┴──────────────┐
+             ▼                             ▼
+     Pré-processamento             Modelo Random Forest
+             │                             │
+             └──────────────┬──────────────┘
+                            ▼
+                     Predição de Casos
+                            │
+                            ▼
+                Dashboard e Relatório PDF
 ```
 
 ---
 
-# Tecnologias Utilizadas
+# Pilha Tecnológica
 
 ## Back-end
 
@@ -107,7 +109,7 @@ Dashboard + Relatório
 - NumPy
 - Scikit-Learn
 
-## Modelo de Machine Learning
+## Machine Learning
 
 - Random Forest Regressor
 
@@ -118,39 +120,72 @@ Dashboard + Relatório
 - JavaScript (ES6+)
 - Chart.js
 
-## Relatórios
+## Geração de Relatórios
 
 - jsPDF
 
----
+## Ferramentas Auxiliares
 
-# Metodologia de Machine Learning e Ciência de Dados
-
-O núcleo preditivo do PrevDengue emprega algoritmos de aprendizado supervisionado para mapear a correlação não linear entre as variáveis meteorológicas e a incidência epidemiológica de dengue.
-
-- **Algoritmo Utilizado:** Random Forest Regressor (scikit-learn), escolhido por sua robustez contra overfitting, capacidade de lidar com interações complexas entre variáveis climáticas e elevada capacidade de generalização.
-
-- **Treinamento e Inferência:** O modelo é alimentado dinamicamente com dados históricos provenientes do SINAN e informações climáticas, realizando o treinamento durante a inicialização da API Flask e executando previsões sob demanda.
-
-- **Validação e Métricas:** O desempenho do modelo foi validado estatisticamente, alcançando um coeficiente de determinação **R² = 0,89**, demonstrando elevada capacidade preditiva para apoio à tomada de decisão.
+- Matplotlib
+- Git
+- GitHub
 
 ---
 
-# Variáveis Climáticas Utilizadas
+# Metodologia de Machine Learning
 
-O modelo considera três fatores fundamentais para o desenvolvimento do vetor *Aedes aegypti*.
+O núcleo analítico do PrevDengue foi desenvolvido utilizando técnicas de aprendizado supervisionado para modelar relações não lineares entre fatores meteorológicos e a incidência histórica de dengue.
 
-## Volume de Chuva (mm)
+## Modelo Utilizado
 
-A precipitação influencia diretamente a formação de criadouros e o acúmulo de água parada.
+O algoritmo adotado foi o **Random Forest Regressor**, disponibilizado pela biblioteca **Scikit-Learn**.
 
-## Umidade Relativa (%)
+A escolha ocorreu devido às seguintes características:
 
-Afeta a sobrevivência, longevidade e atividade do mosquito adulto.
+- elevada capacidade de generalização;
+- robustez contra overfitting;
+- boa interpretação estatística;
+- capacidade de modelar relações não lineares;
+- desempenho consistente em problemas de regressão multivariada.
 
-## Temperatura Média (°C)
+---
 
-Interfere no metabolismo do vetor, acelerando seu ciclo biológico e favorecendo a disseminação do vírus.
+## Pipeline de Dados
+
+O processo analítico é composto pelas seguintes etapas:
+
+1. Importação dos registros históricos do SINAN;
+2. Integração com dados meteorológicos;
+3. Limpeza e tratamento das informações;
+4. Construção das variáveis de entrada;
+5. Treinamento do modelo;
+6. Inferência sob demanda através da API Flask.
+
+---
+
+## Validação Estatística
+
+O desempenho do modelo foi avaliado utilizando métricas de regressão.
+
+**Coeficiente de Determinação**
+
+```text
+R² = 0.89
+```
+
+O resultado demonstra elevada capacidade do modelo em explicar a variabilidade dos dados históricos utilizados durante o treinamento.
+
+---
+
+# Dicionário das Variáveis Climáticas
+
+As previsões são fundamentadas em três variáveis meteorológicas que influenciam diretamente o ciclo biológico do vetor *Aedes aegypti*.
+
+| Variável | Unidade | Impacto Biológico |
+|----------|---------|-------------------|
+| Volume de Chuva | mm | Favorece a formação de criadouros e reservatórios de água parada para oviposição. |
+| Umidade Relativa | % | Aumenta a sobrevivência, longevidade e dispersão do mosquito adulto. |
+| Temperatura Média | °C | Acelera o metabolismo do vetor, reduz o ciclo de desenvolvimento e favorece a replicação viral. |
 
 ---
 
@@ -160,6 +195,7 @@ Interfere no metabolismo do vetor, acelerando seu ciclo biológico e favorecendo
 PREVDENGUE-MACHINELEARNING/
 │
 ├── backend/
+│   │
 │   ├── artefatos/
 │   │   ├── dados_clima_dengue.csv
 │   │   └── grafico_dengue.png
@@ -189,9 +225,9 @@ PREVDENGUE-MACHINELEARNING/
 
 ---
 
-# Como Executar
+# Guia de Instalação
 
-## 1. Clonar o repositório
+## Clonar o Repositório
 
 ```bash
 git clone https://github.com/seu-usuario/PREVDENGUE-MACHINELEARNING.git
@@ -201,13 +237,13 @@ cd PREVDENGUE-MACHINELEARNING
 
 ---
 
-## 2. Instalar as dependências
+## Instalar Dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Caso deseje instalar manualmente:
+ou
 
 ```bash
 pip install flask flask-cors pandas numpy scikit-learn matplotlib
@@ -215,7 +251,7 @@ pip install flask flask-cors pandas numpy scikit-learn matplotlib
 
 ---
 
-## 3. Executar a API
+## Inicializar a API
 
 ```bash
 cd backend/scripts
@@ -223,22 +259,22 @@ cd backend/scripts
 python api.py
 ```
 
-A API será iniciada em:
+Após a inicialização, a API estará disponível em:
 
-```
+```text
 http://127.0.0.1:5000/prever
 ```
 
-Durante a inicialização, o sistema:
+Durante a inicialização são executadas automaticamente as seguintes etapas:
 
-- Carrega os datasets históricos;
-- Realiza o pré-processamento dos dados;
-- Treina automaticamente o modelo Random Forest;
-- Disponibiliza o endpoint para previsões.
+- carregamento dos datasets;
+- tratamento dos dados;
+- treinamento do modelo Random Forest;
+- disponibilização da API REST.
 
 ---
 
-## 4. Executar o Front-end
+## Executar a Interface Web
 
 Abra o arquivo:
 
@@ -246,60 +282,46 @@ Abra o arquivo:
 frontend/index.html
 ```
 
-ou utilize o **Live Server** do Visual Studio Code.
+ou utilize uma extensão como **Live Server** no Visual Studio Code.
 
 ---
 
 # Organização dos Componentes
 
-| Diretório | Descrição |
-|-----------|-----------|
-| `backend/dataset` | Bases de dados originais do SINAN |
-| `backend/artefatos` | Dataset tratado e gráficos gerados |
-| `backend/scripts` | Processamento, treinamento e API |
-| `frontend` | Dashboard web |
-| `docs` | Diagramas e documentação do projeto |
+| Diretório | Responsabilidade |
+|------------|------------------|
+| backend/dataset | Bases de dados epidemiológicas originais |
+| backend/artefatos | Dados tratados e gráficos gerados |
+| backend/scripts | Pipeline de processamento, treinamento e API |
+| frontend | Dashboard Web |
+| docs | Diagramas e documentação técnica |
 
 ---
 
-# Modelo de Machine Learning
+# Objetivo Técnico
 
-O sistema utiliza um modelo de regressão baseado em **Random Forest**, treinado com registros históricos provenientes do SINAN combinados a informações meteorológicas.
-
-## Variáveis Climáticas Analisadas
-
-O modelo preditivo fundamenta-se nos três principais fatores meteorológicos que regem o ciclo biológico do vetor *Aedes aegypti*:
-
-1. **Volume de Chuva (mm):** Precipitação semanal que fomenta a criação de criadouros e reservatórios de água parada para desova e eclosão de larvas.
-2. **Umidade Relativa (%):** Concentração de vapor d'água no ar que impacta diretamente a taxa de sobrevivência, longevidade e o raio de atividade do vetor adulto.
-3. **Temperatura Média (Celsius):** Variável térmica que acelera o metabolismo do inseto, reduz o tempo de incubação extrínseca do vírus e encurta o ciclo de maturação de ovo a mosquito adulto.
-
-
-## Saída do Modelo
-
-- Quantidade prevista de notificações de dengue para semanas epidemiológicas futuras.
+Demonstrar a aplicação integrada de Engenharia de Software, Ciência de Dados e Machine Learning no desenvolvimento de um sistema preditivo para apoio à tomada de decisão em saúde pública, utilizando uma arquitetura modular baseada em API REST e modelos supervisionados de regressão.
 
 ---
 
-# Objetivo
+# Competências Demonstradas
 
-Demonstrar como técnicas de Ciência de Dados, Machine Learning e Engenharia de Software podem apoiar a tomada de decisão na saúde pública por meio da previsão de surtos epidemiológicos e do planejamento preventivo baseado em evidências.
-
----
-
-# Autoria
-
-Projeto desenvolvido durante o programa **Rocket de Férias** da **FPFtech Escola Tecnológica**, demonstrando competências em:
+O desenvolvimento deste projeto evidencia conhecimentos práticos em:
 
 - Engenharia de Software;
+- Arquitetura de Sistemas;
 - Ciência de Dados;
 - Machine Learning;
-- Desenvolvimento Web Full Stack;
+- Engenharia de Features;
 - Desenvolvimento de APIs REST;
-- Visualização de Dados.
+- Desenvolvimento Web Full Stack;
+- Visualização de Dados;
+- Integração entre Back-end e Front-end;
+- Processamento e tratamento de dados epidemiológicos.
 
 ---
 
 # Licença
 
-Este projeto foi desenvolvido para fins acadêmicos e de demonstração tecnológica.
+Este projeto foi desenvolvido exclusivamente para fins acadêmicos e demonstração técnica durante o programa Rocket de Férias da FPFtech Escola Tecnológica.
+````
