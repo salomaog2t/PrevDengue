@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrevDengue</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- CDN do jsPDF para gerar o relatório executivo em PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+    <header class="topo">
+        <div class="topo__conteudo">
+
+            <div class="marca">
+                <svg class="marca__brasao" viewBox="0 0 40 44" aria-hidden="true">
+                    <path class="marca__contorno" d="M20 2 L36 8 v14 c0 10-7 17-16 20 C11 39 4 32 4 22 V8 Z"/>
+                    <path class="marca__selo" d="M12 23 l5 5 11-12"/>
+                </svg>
+                <div>
+                    <h1 class="marca__nome">PrevDengue</h1>
+                    <p class="marca__descricao">Central de Monitoramento Epidemiológico</p>
+                </div>
+            </div>
+
+            <div class="topo__meta">
+                <div class="status">
+                    <span class="status__ponto" aria-hidden="true"></span>
+                    <span class="status__texto">Sistema operacional</span>
+                </div>
+                <div class="relogio">
+                    <span class="rotulo-mini">Última sincronização</span>
+                    <time class="relogio__valor" data-relogio>--:--:--</time>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- 01 — Entrada de parâmetros -->
+        <section class="painel" aria-labelledby="titulo-parametros">
+            <div class="painel__cabecalho">
+                <span class="painel__indice">01</span>
+                <h2 class="painel__titulo" id="titulo-parametros">Parâmetros climáticos da semana</h2>
+            </div>
+
+            <!-- ⚡ Atalhos de Cenários para o Demo Day -->
+            <div class="cenarios-rapidos">
+                <span class="cenarios__rotulo">Simulador Rápido:</span>
+                <button class="btn-cenario btn-verde" type="button" onclick="carregarCenario(0, 40, 15)">🟢 Normal</button>
+                <button class="btn-cenario btn-amarelo" type="button" onclick="carregarCenario(30, 55, 24)">🟡 Atenção</button>
+                <button class="btn-cenario btn-vermelho" type="button" onclick="carregarCenario(145, 91, 31.5)">🔴 Surto Crítico</button>
+            </div>
+
+            <div class="grade-campos">
+
+                <!-- Campo 1: Volume de Chuva -->
+                <div class="campo">
+                    <label class="campo__rotulo" for="chuva">
+                        <svg class="campo__icone" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M7 15a4.5 4.5 0 0 1 .6-9 6 6 0 0 1 11.2 2.1A3.8 3.8 0 0 1 18 15z"/>
+                            <path class="campo__gota" d="M9 18.5v2.2"/>
+                            <path class="campo__gota" d="M13 18.5v2.8"/>
+                            <path class="campo__gota" d="M17 18.5v2.2"/>
+                        </svg>
+                        Volume de chuva
+                    </label>
+                    <div class="campo__caixa">
+                        <input class="campo__entrada" type="number" id="chuva"
+                               data-parametro="chuva" placeholder="145" min="0" max="350" step="1">
+                        <span class="campo__unidade">mm</span>
+                    </div>
+                    <input type="range" class="campo__slider" min="0" max="350" step="1" value="145"
+                           oninput="sincronizarSlider('chuva', this.value)">
+                </div>
+
+                <!-- Campo 2: Umidade Relativa -->
+                <div class="campo">
+                    <label class="campo__rotulo" for="umidade">
+                        <svg class="campo__icone" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 3.2 C12 3.2 5.5 10.4 5.5 14.6 a6.5 6.5 0 0 0 13 0 C18.5 10.4 12 3.2 12 3.2 Z"/>
+                        </svg>
+                        Umidade relativa
+                    </label>
+                    <div class="campo__caixa">
+                        <input class="campo__entrada" type="number" id="umidade"
+                               data-parametro="umidade" placeholder="91" min="40" max="100" step="1">
+                        <span class="campo__unidade">%</span>
+                    </div>
+                    <input type="range" class="campo__slider" min="40" max="100" step="1" value="91"
+                           oninput="sincronizarSlider('umidade', this.value)">
+                </div>
+
+                <!-- Campo 3: Temperatura Média -->
+                <div class="campo">
+                    <label class="campo__rotulo" for="temperatura">
+                        <svg class="campo__icone" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0Z"/>
+                            <path class="campo__mercurio" d="M12 9.5v6"/>
+                        </svg>
+                        Temperatura média
+                    </label>
+                    <div class="campo__caixa">
+                        <input class="campo__entrada" type="number" id="temperatura"
+                               data-parametro="temperatura" placeholder="31.5" min="15" max="38" step="0.5">
+                        <span class="campo__unidade">&deg;C</span>
+                    </div>
+                    <input type="range" class="campo__slider" min="15" max="38" step="0.5" value="31.5"
+                           oninput="sincronizarSlider('temperatura', this.value)">
+                </div>
+
+            </div>
+
+            <button class="botao" type="button" data-acao="calcular">
+                <span class="botao__texto">Calcular previsão</span>
+                <span class="botao__varredura" aria-hidden="true"></span>
+            </button>
+        </section>
+
+        <!-- 02 — Resultado -->
+        <section class="painel" aria-labelledby="titulo-resultado">
+            <div class="painel__cabecalho">
+                <span class="painel__indice">02</span>
+                <h2 class="painel__titulo" id="titulo-resultado">Resultado da análise de regressão</h2>
+                
+                <!-- Selo de Acurácia da IA -->
+                <span class="badge-ia" title="Modelo treinado com Random Forest Regressor sobre base histórica do SINAN">
+                     IA Ativa (Random Forest • R²: 0.89)
+                </span>
+
+                <span class="selo" data-selo>aguardando entrada</span>
+            </div>
+
+            <div class="resultado">
+                <div class="resultado__destaque" data-destaque>
+                    <output class="resultado__numero" data-numero>0</output>
+                    <span class="resultado__unidade">casos estimados</span>
+                </div>
+
+                <div class="resultado__medidor">
+                    <div class="resultado__topo-info" style="display: flex; justify-content: flex-end; margin-bottom: 4px;">
+                        <!-- Botão de Exportar PDF -->
+                        <button class="btn-pdf" type="button" onclick="exportarRelatorioPDF()" title="Baixar Parecer Técnico em PDF">
+                             Baixar Parecer PDF
+                        </button>
+                    </div>
+
+                    <div class="medidor" role="img" aria-label="Escala de risco epidemiológico">
+                        <div class="medidor__preenchimento" data-medidor></div>
+                        <span class="medidor__marca" data-posicao="atencao"></span>
+                        <span class="medidor__marca" data-posicao="critico"></span>
+                    </div>
+                    <div class="medidor__legenda">
+                        <span>0</span><span>10k</span><span>30k</span><span>70k+</span>
+                    </div>
+                    <p class="resultado__parecer" data-parecer aria-live="polite">
+                        Informe os parâmetros climáticos para gerar a projeção.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Semáforo (Corrigido para a escala em milhares/k) -->
+        <section class="semaforo" aria-label="Classificação de risco">
+            <article class="nivel" data-nivel="normal">
+                <div class="nivel__topo">
+                    <span class="nivel__indicador" aria-hidden="true"></span>
+                    <h3 class="nivel__nome">Nível normal</h3>
+                </div>
+                <p class="nivel__descricao">Baixo risco de proliferação. Manter rotina de vigilância.</p>
+                <span class="nivel__faixa">&lt; 14k casos</span>
+            </article>
+
+            <article class="nivel" data-nivel="atencao">
+                <div class="nivel__topo">
+                    <span class="nivel__indicador" aria-hidden="true"></span>
+                    <h3 class="nivel__nome">Nível atenção</h3>
+                </div>
+                <p class="nivel__descricao">Condições favoráveis ao vetor. Intensificar remoção de criadouros.</p>
+                <span class="nivel__faixa">14k a 30k casos</span>
+            </article>
+
+            <article class="nivel" data-nivel="critico">
+                <div class="nivel__topo">
+                    <span class="nivel__indicador" aria-hidden="true"></span>
+                    <h3 class="nivel__nome">Alerta crítico</h3>
+                </div>
+                <p class="nivel__descricao">Surto projetado. Mobilizar agentes de endemias na Zona Leste.</p>
+                <span class="nivel__faixa">&ge; 30k casos</span>
+            </article>
+        </section>
+
+        <!-- 03 — Série histórica (Chart.js) -->
+        <section class="painel" aria-labelledby="titulo-serie">
+            <div class="painel__cabecalho">
+                <span class="painel__indice">03</span>
+                <h2 class="painel__titulo" id="titulo-serie">Série histórica: precipitação e casos notificados</h2>
+            </div>
+
+            <figure class="grafico" data-carregado style="border-style: solid; border-color: var(--cor-borda); padding: var(--esp-4);">
+                <!-- Elemento Canvas onde o Chart.js renderiza o gráfico interativo -->
+                <canvas id="graficoDengue" style="max-height: 380px; width: 100%;"></canvas>
+            </figure>
+        </section>
+
+    </main>
+
+    <footer class="rodape">
+        <p>Protótipo acadêmico &middot; Dados de demonstração &middot; Não representa informação epidemiológica oficial</p>
+    </footer>
+
+    <!-- Bibliotecas e Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

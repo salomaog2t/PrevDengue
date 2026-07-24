@@ -14,7 +14,7 @@ print("Carregando base histórica e treinando Inteligência Artificial para a De
 caminho_dados = os.path.join('..', 'artefatos', 'dados_clima_dengue.csv')
 
 if not os.path.exists(caminho_dados):
-    raise FileNotFoundError(f"❌ Erro: Arquivo não encontrado em {caminho_dados}. Rode o 'processar_sinan.py' primeiro!")
+    raise FileNotFoundError(f" Erro: Arquivo não encontrado em {caminho_dados}. Rode o 'processar_sinan.py' primeiro!")
 
 df = pd.read_csv(caminho_dados)
 
@@ -51,7 +51,7 @@ def prever():
         if previsao > 30000:
             alerta = "vermelho"
             mensagem = "SURTO EPIDEMIOLÓGICO PREVISTO! Mobilizar fumacê e agentes de endemias imediatamente para as zonas de risco."
-        elif previsao > 10000:
+        elif previsao > 13525:
             alerta = "amarelo"
             mensagem = "Risco Moderado. Condições climáticas altamente favoráveis à eclosão do vetor."
         else:
@@ -59,7 +59,7 @@ def prever():
             mensagem = "Situação epidemiológica sob controle. Baixo risco de proliferação do mosquito."
 
         # Imprime no terminal em tempo real (Ótimo para mostrar aos juízes no Demo Day!)
-        print(f"[CONSULTA AO VIVO] Chuva: {chuva}mm | Umidade: {umidade}% | Temp: {temp}°C  👉 Resultado: {previsao:,} casos ({alerta.upper()})")
+        print(f"[CONSULTA AO VIVO] Chuva: {chuva}mm | Umidade: {umidade}% | Temp: {temp}°C Resultado: {previsao:,} casos ({alerta.upper()})")
 
         # Retorna o pacote de dados formatado para o JavaScript do HTML atualizar a tela
         return jsonify({
