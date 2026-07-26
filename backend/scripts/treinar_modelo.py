@@ -6,8 +6,13 @@ from sklearn.metrics import r2_score, mean_absolute_error
 # Carregar os dados limpos de Manaus
 df = pd.read_csv("../dataset/dengue_manaus_limpo.csv")
 
+# Criar uma feature de sazonalidade: a semana do ano (1 a 52)
+# A coluna SE vem como AAAASS (ex: 202501 = ano 2025, semana 01).
+# Pegamos só os 2 últimos dígitos para ter a semana, ignorando o ano.
+df["semana_ano"] = df["SE"] % 100
+
 # Separar as variáveis preditoras (X) e o alvo (y)
-features = ["tempmin", "tempmed", "tempmax", "umidmin", "umidmed", "umidmax"]
+features = ["tempmin", "tempmed", "tempmax", "umidmin", "umidmed", "umidmax", "semana_ano"]
 X = df[features]
 y = df["casos"]
 
