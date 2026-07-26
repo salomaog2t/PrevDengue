@@ -6,13 +6,26 @@ from sklearn.metrics import r2_score, mean_absolute_error
 # Carregar os dados limpos de Manaus
 df = pd.read_csv("../dataset/dengue_manaus_limpo.csv")
 
+# Ordenar do mais antigo para o mais recente (essencial para os lags fazerem sentido)
+df = df.sort_values("SE").reset_index(drop=True)
+
 # Criar uma feature de sazonalidade: a semana do ano (1 a 52)
 # A coluna SE vem como AAAASS (ex: 202501 = ano 2025, semana 01).
 # Pegamos só os 2 últimos dígitos para ter a semana, ignorando o ano.
 df["semana_ano"] = df["SE"] % 100
 
+# Criar features de atraso (lag): clima de semanas anteriores.
+# A dengue leva semanas entre o clima favorável e a notificação do caso.
+# shift(4) desloca a coluna 4 linhas para baixo = "valor de 4 semanas atrás".
+df["temp_lag4"] = df["tempmed"].shift(4)
+df["umid_lag4"] = df["umidmed"].shift(4)
+
+# O shift cria NaN nas primeiras linhas (não há "4 semanas antes" do início).
+# Removemos essas linhas para não ter valores vazios.
+df = df.dropna()
+
 # Separar as variáveis preditoras (X) e o alvo (y)
-features = ["tempmin", "tempmed", "tempmax", "umidmin", "umidmed", "umidmax", "semana_ano"]
+features = ["tempmin", "tempmed", "tempmax", "umidmin", "umidmed", "umidmax", "semana_ano", "temp_lag4", "umid_lag4"]
 X = df[features]
 y = df["casos"]
 
